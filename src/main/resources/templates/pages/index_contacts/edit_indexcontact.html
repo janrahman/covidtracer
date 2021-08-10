@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="components/base_layout :: layout(~{::title}, ~{::main}, ${1})">
+<head>
+    <title>Contact Tracer - Edit date period</title>
+</head>
+<body>
+<main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4">
+    <h1 class="h4" th:text="${'Edit contact period of ' + contact.firstName + ' ' + contact.name}">Edit contact</h1>
+    <p th:text="${'Associated to index: ' + index.firstName + ' ' + index.name}">Edit contact for database</p>
+    <div class="row my-4">
+        <div class="col-12 col-md-6 col-lg-6 mb-4 mb-lg-0">
+            <form action="" th:action="@{/index/{indexId}/contacts/{contactId}/edit(indexId=${index.id},contactId=${contact.id})}" th:object="${contact}" method="post">
+                <div class="form-group">
+                    <label for="datePeriodStart">Period start</label>
+                    <input type="date" class="form-control" id="datePeriodStart" th:field="*{datePeriodStart}" />
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('datePeriodStart')}" th:errors="*{datePeriodStart}">Error</small>
+                </div>
+                <div class="form-group">
+                    <label for="datePeriodEnd">Period end</label>
+                    <input type="date" class="form-control" id="datePeriodEnd" th:field="*{datePeriodEnd}" />
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('datePeriodEnd')}" th:errors="*{datePeriodEnd}">Error</small>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <a href="#" th:href="@{/index/{indexId}/contacts/{contactId}/delete(indexId=${index.id},contactId=${contact.id})}" class="btn btn-danger" >Delete from index</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+</body>
+</html>
+

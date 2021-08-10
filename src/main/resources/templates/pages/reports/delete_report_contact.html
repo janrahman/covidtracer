@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="components/base_layout :: layout(~{::title}, ~{::main}, ~{})">
+<head>
+    <title>Contact Tracer - Confirm report removal</title>
+</head>
+<body>
+<main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4" th:object="${report}">
+    <h1 class="h4" th:text="'Report id: ' + *{id}">Report</h1>
+    <p th:text="*{date}">Detail page</p>
+    <div class="row my-4">
+        <div class="col-12 mb-4 mb-lg-0">
+            <div class="card" >
+                <div class="card-body">
+                    <h5
+                            class="card-title"
+                            th:text="'Please confirm removal of report #' + *{id} + '.'"
+                    >
+                        Card title
+                    </h5>
+                    <p class="card-text" th:text="*{comment}"></p>
+                    <a href="#" class="card-link btn btn-secondary" th:href="@{/contacts/{contactId}(contactId=${contact.id})}">Back</a>
+                    <a href="#" class="card-link btn btn-danger" th:href="@{/reports/{reportId}/contacts/{contactId}/delete(reportId=*{id},contactId=${contact.id})}">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

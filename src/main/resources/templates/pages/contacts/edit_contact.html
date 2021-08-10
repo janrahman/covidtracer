@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="components/base_layout :: layout(~{::title}, ~{::main}, ${1})">
+<head>
+    <title>Contact Tracer - Edit index</title>
+</head>
+<body>
+<main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4">
+    <h1 class="h4">Edit contact</h1>
+    <p th:text="${contact.firstName + ' ' + contact.name}">Edit contact for database</p>
+    <div class="row my-4">
+        <div class="col-12 col-md-6 col-lg-6 mb-4 mb-lg-0">
+            <form action="" th:action="@{/contacts/{id}/edit(id=${contact.id})}" th:object="${contact}" method="post">
+                <div class="form-group">
+                    <label for="firstname">First name</label>
+                    <input type="text" class="form-control" id="firstname" th:field="*{firstName}" />
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Error</small>
+                </div>
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" id="name" th:field="*{name}" />
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Error</small>
+                </div>
+                <div class="form-group">
+                    <label for="street">Street</label>
+                    <input type="text" class="form-control" id="street" th:field="*{address.street}" />
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('address.street')}" th:errors="*{address.street}">Error</small>
+                </div>
+                <div class="form-group">
+                    <label for="postcode">Postcode</label>
+                    <input type="text" class="form-control" id="postcode" th:field="*{address.postcode}" />
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('address.postcode')}" th:errors="*{address.postcode}">Error</small>
+                </div>
+                <div class="form-group">
+                    <label for="city">City</label>
+                    <input type="text" class="form-control" id="city" th:field="*{address.city}" />
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('address.city')}" th:errors="*{address.city}">Error</small>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input type="text" class="form-control" id="phone" th:field="*{phone}" />
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">Error</small>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="text" class="form-control" id="email" th:field="*{email}" />
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Error</small>
+                </div>
+                <div class="form-group" th:if="${contact.status == T(de.hhu.covidtracer.models.Status).STAFF}">
+                    <label for="occupation">Occupation</label>
+                    <input type="text" class="form-control" id="occupation" th:field="*{occupationGroup}" />
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('occupationGroup')}" th:errors="*{occupationGroup}">Error</small>
+                </div>
+                <div class="form-group" th:if="${contact.status == T(de.hhu.covidtracer.models.Status).STAFF}">
+                    <label for="category">Category</label>
+                    <input type="text" class="form-control" id="category" th:field="*{category}" />
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('category')}" th:errors="*{category}">Error</small>
+                </div>
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select class="form-control" id="status" th:field="*{status}">
+                        <option
+                                th:each="i: ${T(de.hhu.covidtracer.models.Status).values()}"
+                                th:text="${i.getName()}"
+                                th:value="${i}"
+                                th:selected="${i} == *{status} ? true : false"
+                        >
+                            Status
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="station">Station</label>
+                    <select class="form-control" id="station" th:field="*{station.id}">
+                        <option
+                                th:each="s: ${stations.stationDTOList}"
+                                th:text="${s.name}"
+                                th:value="${s.id}"
+                                th:selected="${s} == *{station} ? true : false"
+                        >
+                            Station
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="hidden" th:field="${contact.id}" readonly="readonly">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+</body>
+</html>
+

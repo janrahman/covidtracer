@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="components/base_layout :: layout(~{::title}, ~{::main}, ${1})">
+<head>
+    <title>Contact Tracer - Index</title>
+</head>
+<body>
+    <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4">
+        <h1 class="h4">Index</h1>
+        <p>All index people</p>
+        <div class="row my-4">
+            <div class="col-12 mb-4 mb-lg-0">
+                <div class="card">
+                    <h5 class="card-header">Index</h5>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-striped" th:replace="components/content/content_table_indexlist :: indexTable(${indexPeople})">
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

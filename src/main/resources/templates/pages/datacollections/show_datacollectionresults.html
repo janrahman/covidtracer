@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="components/base_layout :: layout(~{::title}, ~{::main}, ${5})">
+<head>
+    <title>Contact Tracer - Statistic results</title>
+</head>
+<body>
+<main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4">
+    <h1 class="h4" th:text="'Results from ' + ${dates.start} + ' to ' + ${dates.end}">Statistic results</h1>
+    <p>Results</p>
+    <div class="row my-4">
+        <div class="col-12 col-xl-8 mb-4 mb-lg-0">
+            <div class="card">
+                <h5 class="card-header">Results</h5>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col">Timestamp</th>
+                                <th scope="col">Index patients</th>
+                                <th scope="col">Index staff</th>
+                                <th scope="col">Contact staff</th>
+                                <th scope="col">Staff paused quarantine</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="stat : ${dataCollectionResults}">
+                                <td th:text="${stat.localTimestamp}"></td>
+                                <td th:text="${stat.countIndexStatusPatientsInQuarantine}"></td>
+                                <td th:text="${stat.countIndexStatusStaffInQuarantine}"></td>
+                                <td th:text="${stat.countPositiveContactStaff}"></td>
+                                <td th:text="${stat.countIndexPersonStaffPauseQuarantine}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-xl-4">
+            <div class="card">
+                <h5 class="card-header">Total</h5>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Staff in quarantine:
+                            <span class="badge badge-primary badge-pill" th:text="${totalScoreStaff}"></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Patients in quarantine:
+                            <span class="badge badge-primary badge-pill" th:text="${totalScorePatients}"></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

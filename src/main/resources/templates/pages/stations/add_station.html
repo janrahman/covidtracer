@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="components/base_layout :: layout(~{::title}, ~{::main}, ${3})">
+<head>
+    <title>Contact Tracer - New Station</title>
+</head>
+<body>
+    <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4">
+        <h1 class="h4">New Station</h1>
+        <p>Create new station for database.</p>
+        <div class="row my-4">
+            <div class="col-12 col-md-6 col-lg-6 mb-4 mb-lg-0">
+                <form action="" th:action="@{/stations/new}" th:object="${stationForm}" method="post">
+                    <div class="form-group">
+                        <label class="label" for="name">Name</label>
+                        <input type="text" class="form-control" id="name" required th:field="*{name}" />
+                        <small class="form-text text-danger" th:if="${#fields.hasErrors('${stationForm}')}" th:errors="${stationForm}">Error</small>
+                    </div>
+                    <div class="form-group">
+                        <label class="label" for="department">Department</label>
+                        <input type="text" class="form-control" id="department"  th:field="*{department}" />
+                        <small class="form-text text-danger" th:if="${#fields.hasErrors('department')}" th:errors="*{department}">Error</small>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="label" for="hospitalName">Hospital</label>
+                        <input type="text" class="form-control" id="hospitalName" th:field="*{hospitalName}" />
+                        <small class="form-text text-danger" th:if="${#fields.hasErrors('hospitalName')}" th:errors="*{hospitalName}">Error</small>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

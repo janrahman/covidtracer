@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="components/base_layout :: layout(~{::title}, ~{::main}, ${1})">
+<head>
+    <title th:text="'Contact Tracer - ' + ${indexPerson.firstName} + ' ' + ${indexPerson.name}">Contact Tracer - Name</title>
+</head>
+<body>
+    <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4">
+        <p>
+            <span class="badge badge-primary">Index</span>
+            <span class="badge badge-secondary" th:text="${indexPerson.status.name}">status</span>
+        </p>
+        <div class="d-flex justify-content-between">
+            <div>
+                <h1 class="h4" th:text="${indexPerson.firstName} + ' ' + ${indexPerson.name}">Index person</h1>
+            </div>
+            <div>
+                <a href="#" th:href="@{/export/{id}(id=*{id})}" class="btn btn-secondary">Export</a>
+                <a href="#" th:href="@{/index/{id}/edit(id=*{id})}" class="btn btn-primary">Edit</a>
+                <a href="#" th:href="@{/index/{id}/delete/confirm(id=*{id})}" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+        <p th:text="${indexPerson.birthday + ', ' + indexPerson.address.street + ', ' + indexPerson.address.postcode + ' ' + indexPerson.address.city}">Detail page</p>
+        <div class="row my-4">
+            <div class="col-12 mb-4 mb-lg-0">
+                <div class="card">
+                    <h5 class="card-header">Status and progress</h5>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-striped">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Quarantine</th>
+                                    <th scope="col">Reported to health department</th>
+                                    <th scope="col" th:if="${indexPerson.status.name() == 'STAFF'}">Reported to supervisor</th>
+                                    <th scope="col">Visible</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:object="${indexPerson}">
+                                    <td th:text="*{status.name}">Status</td>
+                                    <td th:text="*{inQuarantine}">True</td>
+                                    <td th:text="*{reportHealthDepartment}">True</td>
+                                    <td th:if="*{status.name() == 'STAFF'}" th:text="*{reportSupervisor}">True</td>
+                                    <td th:text="*{visible}">False</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 mb-4 mb-lg-0">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <div>
+                            <h5>Reports</h5>
+                        </div>
+                        <div>
+                            <a href="#" th:href="@{/reports/index/{id}/new(id=${indexPerson.id})}" class="btn btn-sm btn-primary">New</a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-striped">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Comment</th>
+                                    <th scope="col"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="report : ${reports}">
+                                    <th scope="row" th:text="${report?.date}">17371705</th>
+                                    <td>
+                                        <span th:text="${report?.comment}" class="text-truncate">
+                                            comment
+                                        </span>
+                                    </td>
+                                    <td class="btn-group" aria-label="reports options">
+                                        <a href="#" th:href="@{/reports/{reportId}/index/{indexId}/edit(reportId=${report.id},indexId=${indexPerson.id})}" class="btn btn-sm btn-primary">Edit</a>
+                                        <a href="#" th:href="@{/reports/{reportId}/index/{indexId}/delete/confirm(reportId=${report.id},indexId=${indexPerson.id})}" class="btn btn-sm btn-danger">Delete</a>
+                                    </td>
+                                </tr>
+                                <tr th:object="${firstReport}">
+                                    <th scope="row" th:text="*{date}">17371705</th>
+                                    <td>
+                                        <span th:text="*{comment}" class="text-truncate">
+                                            comment
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href="#" th:href="@{/reports/{reportId}/index/{indexId}/edit(reportId=*{id},indexId=${indexPerson.id})}" class="btn btn-sm btn-primary">Edit</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row my-4">
+            <div class="col-12 mb-4 mb-lg-0">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <div>
+                            <h5>Contacts</h5>
+                        </div>
+                        <div>
+                            <a
+                                    href="#"
+                                    th:href="@{/index/{id}/contacts(id=${indexPerson.id},status=${T(de.hhu.covidtracer.models.Status).STAFF})}"
+                                    class="btn btn-sm btn-secondary"
+                            >
+                                Staff
+                            </a>
+                            <a
+                                    href="#"
+                                    th:href="@{/index/{id}/contacts(id=${indexPerson.id},status=${T(de.hhu.covidtracer.models.Status).PATIENT})}"
+                                    class="btn btn-sm btn-secondary"
+                            >
+                                Patients
+                            </a>
+                            <a
+                                    href="#"
+                                    th:href="@{/index/{id}/contacts(id=${indexPerson.id},status=${T(de.hhu.covidtracer.models.Status).VISITOR})}"
+                                    class="btn btn-sm btn-secondary"
+                            >
+                                Visitors
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table
+                                    class="table table-sm table-striped"
+                                    th:replace="components/content/content_table_contactlist :: contactTable(${indexPerson.id}, ${contacts}, ${T(de.hhu.covidtracer.models.Status).VISITOR})">
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="components/base_layout :: layout(~{::title}, ~{::main}, ${2})">
+<head>
+    <title>Contact Tracer - Open Notifications</title>
+</head>
+<body>
+<main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4">
+    <ul class="nav justify-content-end">
+        <li class="nav-item">
+            <a class="nav-link" href="#" th:href="@{/index/open/healthdepartment}">Open health department reports</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" th:href="@{/index/open/staff}">Open supervisor reports</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" th:href="@{/index/open/quarantine}">Quarantine</a>
+        </li>
+    </ul>
+    <h1 class="h4">Open notifications</h1>
+    <p>People who are not reported to health department or supervisor</p>
+    <div class="row my-4">
+        <div class="col-12 mb-4 mb-lg-0">
+            <div class="card">
+                <h5 class="card-header">Patients and staff not reported to health department</h5>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table
+                                class="table table-sm table-striped"
+                                th:replace="components/content/content_table_indexlist :: indexTable(${noHDReportedPeople})">
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mb-4 mb-lg-0">
+            <div class="card">
+                <h5 class="card-header">Staff not reported to supervisor</h5>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table
+                                class="table table-sm table-striped"
+                                th:replace="components/content/content_table_indexlist :: indexTable(${noMAReportedStaff})">
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Content table index list</title>
+</head>
+<body>
+<table class="table table-sm table-striped" th:fragment="contactTable(indexId, contacts, status)">
+    <thead>
+    <tr>
+        <th scope="col">Fullname</th>
+        <th scope="col">Address</th>
+        <th scope="col">Phone</th>
+        <th scope="col">Email</th>
+        <th scope="col">Expose</th>
+        <th scope="col">Station</th>
+        <th scope="col" th:unless="${status == T(de.hhu.covidtracer.models.Status).VISITOR}">Last report</th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="c : ${contacts}">
+        <td th:text="${c?.name + ' ' + c?.firstName}">Name</td>
+        <td th:text="${c?.address?.street + ', ' + c?.address?.postcode + ' ' + c?.address?.city}">Street Nr</td>
+        <td th:text="${c?.phone}">0000012-01-01</td>
+        <td th:text="${c?.email}">test@test.de</td>
+        <td>
+            <a th:href="@{/index/{indexId}/contacts/{contactId}/edit(indexId=${indexId}, contactId=${c?.id})}" title="Change expose dates">
+                <span th:text="${(c?.datePeriodStart == null or c?.datePeriodStart.isEmpty()) or (c?.datePeriodEnd == null or c?.datePeriodEnd.isEmpty())} ? 'Invalid dates' : ${c?.datePeriodStart + ' - ' + c?.datePeriodEnd}"></span>
+            </a>
+        </td>
+        <td th:text="${c?.station?.name}"></td>
+        <td th:text="${c?.latestReportDate}" th:unless="${status == T(de.hhu.covidtracer.models.Status).VISITOR}"></td>
+        <td class="btn-group">
+            <a href="#" class="btn btn-sm btn-primary" th:href="@{/contacts/{contactId}(contactId=${c?.id})}">View</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

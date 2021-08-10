@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="components/base_layout :: layout(~{::title}, ~{::main}, ~{})">
+<head>
+    <title>Contact Tracer - Edit Report</title>
+</head>
+<body>
+<main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4">
+    <h1 class="h4">Edit report</h1>
+    <p th:text="'Edit report id ' + ${reportForm.id}">Edit Report</p>
+    <div class="row my-4">
+        <div class="col-12 col-md-6 col-lg-6 mb-4 mb-lg-0"
+             th:replace="components/content/content_form_report :: form(${reportForm}, @{/reports/{id}/contacts/{contactId}/edit(id=${reportForm.id},contactId=${contact.id})}, ~{})">
+        </div>
+    </div>
+</main>
+</body>
+</html>

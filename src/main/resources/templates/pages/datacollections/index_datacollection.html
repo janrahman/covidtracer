@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="components/base_layout :: layout(~{::title}, ~{::main}, ${5})">
+<head>
+    <title>Contact Tracer - Statistics</title>
+</head>
+<body>
+<main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4">
+    <h1 class="h4">Statistics</h1>
+    <p>Data collections</p>
+    <div class="row my-4">
+        <div class="col-12 col-md-6 mb-4 mb-lg-0 col-lg-6">
+            <div class="card">
+                <h5 class="card-header">Filter by date</h5>
+                <div class="card-body">
+                    <div class="card-text">
+                        <form method="get" th:object="${filterDate}" th:action="@{/statistics/search}">
+                            <div class="form-group form-row">
+                                <div class="col">
+                                    <input type="date" class="form-control" placeholder="Start date" required th:field="*{start}" />
+                                </div>
+                                <div class="col">
+                                    <input type="date" class="form-control" placeholder="End date" required th:field="*{end}" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-10">
+                                    <button type="submit" class="btn btn-primary">Filter</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 mb-4 mb-lg-0 col-lg-6">
+            <div class="card">
+                <h5 class="card-header">Current</h5>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col">Index patients</th>
+                                <th scope="col">Index staff</th>
+                                <th scope="col">Contact staff</th>
+                                <th scope="col">Staff paused quarantine</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:object="${current}">
+                                <td th:text="*{countIndexStatusPatientsInQuarantine}"></td>
+                                <td th:text="*{countIndexStatusStaffInQuarantine}"></td>
+                                <td th:text="*{countPositiveContactStaff}"></td>
+                                <td th:text="*{countIndexPersonStaffPauseQuarantine}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mb-4 mb-lg-0">
+            <div class="card">
+                <h5 class="card-header">Past statistics</h5>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col">Timestamp</th>
+                                <th scope="col">Index patients</th>
+                                <th scope="col">Index staff</th>
+                                <th scope="col">Contact staff</th>
+                                <th scope="col">Staff paused quarantine</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="stat : ${dataCollections}">
+                                <td th:text="${stat.localTimestamp}"></td>
+                                <td th:text="${stat.countIndexStatusPatientsInQuarantine}"></td>
+                                <td th:text="${stat.countIndexStatusStaffInQuarantine}"></td>
+                                <td th:text="${stat.countPositiveContactStaff}"></td>
+                                <td th:text="${stat.countIndexPersonStaffPauseQuarantine}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

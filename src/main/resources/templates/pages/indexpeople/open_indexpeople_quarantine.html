@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="components/base_layout_js :: layout(~{::title}, ~{::main}, ~{::script}, ${8})">
+<head>
+    <title>Contact Tracer - Quarantine</title>
+</head>
+<body>
+<main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4">
+    <h1 class="h4">Quarantine</h1>
+    <p>People in quarantine.</p>
+    <div class="row my-4">
+        <div class="col-12 mb-4 mb-lg-0">
+            <div class="card">
+                <h5 class="card-header">People</h5>
+                <div class="card-body">
+                    <form action="#" method="post" th:action="@{/index/open/quarantine}" th:object="${people}">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-striped">
+                                <thead>
+                                <tr>
+                                    <th scope="col" th:if="${!people.indexPersonDTOList.empty}"><input type="checkbox" onclick="togglecheckboxes()" id="quarantineCheckAll" /></th>
+                                    <th scope="col">Id</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">First Name</th>
+                                    <th scope="col">Entry date</th>
+                                    <th scope="col"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="person, stat : *{indexPersonDTOList}">
+                                    <td>
+                                        <div class="form-check">
+                                            <input
+                                                    class="form-check-input position-static"
+                                                    type="checkbox"
+                                                    name="quarantine"
+                                                    th:field="*{indexPersonDTOList[__${stat.index}__].inQuarantine}"
+                                            >
+                                            <input type="hidden" th:field="*{indexPersonDTOList[__${stat.index}__].id}" readonly="readonly" />
+                                            <input type="hidden" th:field="*{indexPersonDTOList[__${stat.index}__].visible}" readonly="readonly" />
+                                            <input type="hidden" th:field="*{indexPersonDTOList[__${stat.index}__].owner}" readonly="readonly" />
+                                        </div>
+                                    </td>
+                                    <th scope="row" th:text="${person.id}"></th>
+                                    <td th:text="${person.name}">Name</td>
+                                    <td th:text="${person.firstName}">FirstName</td>
+                                    <td th:text="${person.entryDateTime}">1900-01-01</td>
+                                    <td aria-label="patients options">
+                                        <a th:href="@{/index/{id}(id=${person.id})}" href="/#" class="btn btn-sm btn-primary">View</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <button type="submit" class="btn btn-block btn-primary">Submit all</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+<script th:replace="components/content/content_js_checkbox_all :: checkboxAll"></script>
+</body>
+</html>

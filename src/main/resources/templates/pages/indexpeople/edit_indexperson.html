@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="components/base_layout :: layout(~{::title}, ~{::main}, ${1})">
+<head>
+    <title>Contact Tracer - Edit index</title>
+</head>
+<body>
+    <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4">
+        <h1 class="h4">Edit index</h1>
+        <p>Edit index person for database</p>
+        <div class="row my-4">
+            <div class="col-12 col-md-6 col-lg-6 mb-4 mb-lg-0">
+                <form action="" th:action="@{/index/{id}/edit(id=${indexPerson.id})}" th:object="${indexPerson}" method="post">
+                    <div class="form-group">
+                        <label for="firstname">First name</label>
+                        <input type="text" class="form-control" id="firstname" required th:field="*{firstName}" />
+                        <small class="form-text text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Error</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" required th:field="*{name}" />
+                        <small class="form-text text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Error</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="birthday">Birthday</label>
+                        <input type="date" class="form-control" id="birthday" required th:field="*{birthday}" />
+                        <small class="form-text text-danger" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}">Error</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="street">Street</label>
+                        <input type="text" class="form-control" id="street" required th:field="*{address.street}" />
+                        <small class="form-text text-danger" th:if="${#fields.hasErrors('address.street')}" th:errors="*{address.street}">Error</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="postcode">Postcode</label>
+                        <input type="text" class="form-control" id="postcode" required th:field="*{address.postcode}" />
+                        <small class="form-text text-danger" th:if="${#fields.hasErrors('address.postcode')}" th:errors="*{address.postcode}">Error</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <input type="text" class="form-control" id="city" required th:field="*{address.city}" />
+                        <small class="form-text text-danger" th:if="${#fields.hasErrors('address.city')}" th:errors="*{address.city}">Error</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select class="form-control" id="status" th:field="*{status}">
+                            <option
+                                    th:each="i: ${T(de.hhu.covidtracer.models.Status).values()}"
+                                    th:unless="${i == T(de.hhu.covidtracer.models.Status).VISITOR}"
+                                    th:text="${i.getName()}"
+                                    th:value="${i}"
+                                    th:selected="${i} == *{status} ? true : false"
+                            >
+                                Status
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="reporthd" name="reporthd" th:field="*{reportHealthDepartment}" />
+                            <label class="form-check-label" for="reporthd">Reported to health department?</label>
+                        </div>
+                        <div class="form-check" th:if="*{status.name == 'Staff'}">
+                            <input type="checkbox" class="form-check-input" id="reportma" name="reportma" th:field="*{reportSupervisor}" />
+                            <label class="form-check-label" for="reportma">Reported to supervisor?</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="quarantine" name="quarantine" th:field="*{inQuarantine}" />
+                            <label class="form-check-label" for="quarantine">In Quarantine?</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="visible" name="visible" th:field="*{visible}" />
+                            <label class="form-check-label" for="visible">Visible</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" th:field="*{owner}" />
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

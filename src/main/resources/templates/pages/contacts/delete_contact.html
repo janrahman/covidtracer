@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="components/base_layout :: layout(~{::title}, ~{::main}, ${1})">
+<head>
+    <title>Contact Tracer - Confirm removal</title>
+</head>
+<body>
+<main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4" th:object="${contact}">
+    <h1 class="h4" th:text="*{firstName + ' ' + name}">Index</h1>
+    <p th:text="*{address?.street + ', ' + address?.postcode + ' ' + address?.city}">Detail page</p>
+    <div class="row my-4">
+        <div class="col-12 mb-4 mb-lg-0">
+            <div class="card" >
+                <div class="card-body">
+                    <h5
+                            class="card-title"
+                            th:text="'Please confirm removal of '+ *{firstName} + ' ' + *{name} + '.'"
+                    >
+                        Card title
+                    </h5>
+                    <p class="card-text">Warning: every associated data will be removed.</p>
+                    <a href="#" class="card-link btn btn-secondary" th:href="@{/contacts/{id}(id=*{id})}">Back to profile</a>
+                    <a href="#" class="card-link btn btn-danger" th:href="@{/contacts/{id}/delete(id=*{id})}">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

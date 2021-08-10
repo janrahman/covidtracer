@@ -1,0 +1,53 @@
+<nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse"  xmlns:th="http://www.thymeleaf.org" th:fragment="sidebar(active)">
+    <div class="position-sticky">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${active == 0 ? 'active' : ''}" aria-current="page" href="#" th:href="@{/}">
+                    <span class="ml-2">Overview</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${active == 1 ? 'active' : ''}" href="#" th:href="@{/index}">
+                    <span class="ml-2">Index lists</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${active == 3 ? 'active' : ''}" href="#" th:href="@{/stations}">
+                    <span class="ml-2">Stations</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${active == 4 ? 'active' : ''}" href="#" th:href="@{/tests}">
+                    <span class="ml-2">Tests</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${active == 5 ? 'active' : ''}" href="#" th:href="@{/statistics}">
+                    <span class="ml-2">Statistics</span>
+                </a>
+            </li>
+        </ul>
+        <h6 class="sidebar-heading px-4 mt-4 mb-1 text-muted flex-column">
+            <a class="text-muted" th:classappend="${active == 2 ? 'active' : ''}" href="#" th:href="@{/index/open}">
+                <span>Open Notifications</span>
+            </a>
+        </h6>
+        <ul class="nav flex-column mb-2">
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${active == 6 ? 'active' : ''}" th:href="@{/index/open/healthdepartment}">
+                    <span class="ml-2">Health department</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${active == 7 ? 'active' : ''}" th:href="@{/index/open/staff}">
+                    <span class="ml-2">Supervisor</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${active == 8 ? 'active' : ''}" th:href="@{/index/open/quarantine}">
+                    <span class="ml-2">Quarantine</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>

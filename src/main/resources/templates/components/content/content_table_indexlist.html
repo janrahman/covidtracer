@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Content table index list</title>
+</head>
+<body>
+<table class="table table-sm table-striped" th:fragment="indexTable(index)">
+    <thead>
+    <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Full Name</th>
+        <th scope="col">Birthday</th>
+        <th scope="col">Address</th>
+        <th scope="col">Entry date</th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="person : ${index}">
+        <th scope="row" th:text="${person.id}">Id</th>
+        <td th:text="${person.firstName + ' ' + person.name}">Name</td>
+        <td th:text="${person.birthday}">1900-01-01</td>
+        <td th:text="${person.address?.street + ', ' + person.address?.postcode + ', ' + person.address?.city}">Address
+        </td>
+        <td th:text="${person.entryDateTime}">1900-01-01</td>
+        <td class="btn-group" aria-label="patients options">
+            <a th:href="@{/export/{id}(id=${person.id})}" href="#" class="btn btn-sm btn-secondary">Export</a>
+            <a th:href="@{/index/{id}(id=${person.id})}" href="/#" class="btn btn-sm btn-primary">View</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="components/base_layout :: layout(~{::title}, ~{::main}, ${3})">
+<head>
+    <title>Contact Tracer - Edit Station</title>
+</head>
+<body>
+<main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4">
+    <h1 class="h4" th:text="'Change station for ' + ${contact.firstName} + ' ' + ${contact.name}">Edit Station</h1>
+    <p th:text="${contact.address.street} + ', ' + ${contact.address.postcode} + ', ' + ${contact.address.city}">Edit station.</p>
+    <div class="row my-4">
+        <div class="col-12 col-md-6 col-lg-6 mb-4 mb-lg-0">
+            <form action="" th:action="@{/contacts/{contactId}/edit_station(contactId=${contact.id})}" th:object="${contactStation}" method="post">
+                <div class="form-group">
+                    <label for="station">Stations</label>
+                    <select class="form-control" id="station" th:field="*{id}">
+                        <option
+                                th:each="s: ${stations}"
+                                th:text="${s.name}"
+                                th:value="${s.id}"
+                                th:selected="${s.id} == *{id} ? true : false"
+                        >
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+</body>
+</html>

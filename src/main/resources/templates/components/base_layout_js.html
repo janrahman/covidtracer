@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="layout(title, content, scripts, active)">
+<head th:replace="components/base_head :: head(${title})">
+</head>
+<body>
+<nav th:replace="components/base_topbar :: topbar"></nav>
+<div class="container-fluid">
+    <div class="row">
+        <nav th:replace="components/base_sidebar :: sidebar(${active})"></nav>
+        <th:block th:replace="${content}" />
+    </div>
+</div>
+<th:block th:replace="${scripts}"></th:block>
+</body>
+</html>

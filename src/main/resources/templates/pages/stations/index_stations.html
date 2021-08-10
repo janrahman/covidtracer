@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="components/base_layout :: layout(~{::title}, ~{::main}, ${3})">
+<head>
+    <title>Contact Tracer - Stations</title>
+</head>
+<body>
+    <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4">
+        <h1 class="h4">Overview</h1>
+        <p>Station list</p>
+        <div class="row my-4">
+            <div class="col-12 mb-4 mb-lg-0">
+                <div class="card">
+                    <h5 class="card-header">Stations</h5>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-striped">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Id</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Department</th>
+                                    <th scope="col">Hospital</th>
+                                    <th scope="col"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="station : ${stations}">
+                                    <th scope="row" th:text="${station.id}"></th>
+                                    <td th:text="${station.name}">Name</td>
+                                    <td th:text="${station.department}">Department</td>
+                                    <td th:text="${station.hospitalName}">Hospital</td>
+                                    <td class="btn-group" aria-label="station options">
+                                        <a href="#" th:href="@{/stations/{id}/edit(id=${station.id})}" class="btn btn-sm btn-primary">Edit</a>
+                                        <a href="#" th:href="@{/stations/{id}/delete/confirm(id=${station.id})}" class="btn btn-sm btn-danger">Delete</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

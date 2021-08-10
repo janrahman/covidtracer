@@ -1,0 +1,13 @@
+<script th:inline="javascript" xmlns:th="http://www.thymeleaf.org" th:fragment="checkboxAll">
+    let checkToggle = true;
+
+    function togglecheckboxes(){
+        const inputs = document.getElementsByTagName('input');
+
+        for (let i in inputs) {
+            if (inputs[i].type === 'checkbox') inputs[i].checked = checkToggle;
+        }
+
+        checkToggle = !checkToggle;
+    }
+</script>

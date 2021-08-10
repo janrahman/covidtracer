@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="components/base_layout :: layout(~{::title}, ~{::main}, ${4})">
+<head>
+    <title th:text="'Contact Tracer - Appointment ' + ${person.firstName} + ' ' + ${person.name}">Contact Tracer - Name</title>
+</head>
+<body>
+<main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4">
+    <h1 class="h4" th:text="${person.firstName} + ' ' + ${person.name}">Index</h1>
+    <p th:text="${person.birthday} + ', ' + ${person.address?.street} + ', ' + ${person.address?.postcode} + ', ' + ${person.address?.city}">Appointment details</p>
+    <div class="row my-4">
+        <div class="col-12 mb-4 mb-lg-0">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between">
+                    <div>
+                        <h5>Appointments</h5>
+                    </div>
+                    <div sec:authorize="hasRole('ROLE_ADMIN') or isAnonymous()">
+                        <a href="#" th:href="@{tests/new}" class="btn btn-sm btn-primary">New</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">Visited?</th>
+                                <th scope="col" sec:authorize="hasRole('ROLE_ADMIN') or isAnonymous()"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="appointment : ${appointments}">
+                                <td th:text="${appointment.date} + ' ' + ${appointment.time}">DateTime</td>
+                                <td th:text="${appointment.participated}"></td>
+                                <td class="btn-group" sec:authorize="hasRole('ROLE_ADMIN') or isAnonymous()">
+                                    <a th:href="@{/tests/{appointmentId}/edit(appointmentId=${appointment.id})}" href="#" class="btn btn-sm btn-primary">Edit</a>
+                                    <a th:href="@{/tests/{appointmentId}/delete(appointmentId=${appointment.id})}" href="#" class="btn btn-sm btn-danger">Delete</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

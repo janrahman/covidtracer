@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="components/base_layout :: layout(~{::title}, ~{::main}, ${0})">
+<head>
+    <title>Contact Tracer - Overview</title>
+</head>
+<body>
+    <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4">
+        <h1 class="h4">Overview</h1>
+        <p>Start, upload, last index entries.</p>
+        <div class="alert alert-success" role="alert" th:if="${messageSuccess ne null}" th:text="${messageSuccess}">
+        </div>
+        <div class="alert alert-danger" role="alert" th:if="${messageDanger ne null}" th:text="${messageDanger}">
+        </div>
+        <div class="row my-4">
+            <div class="col-12 col-md-6 mb-4 mb-lg-0 col-lg-6">
+                <div class="card">
+                    <h5 class="card-header">Notifications</h5>
+                    <div class="card-body">
+                        <h5 class="card-title">Today's notifications (count)</h5>
+                        <div class="card-text list-group list-group-flush">
+                            <a
+                                    href="#"
+                                    th:href="@{/index/open/healthdepartment}"
+                                    class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                            >
+                                Not reported to health department:
+                                <span class="badge badge-primary badge-pill" th:text="${countNotReportedToHealthDepartment}">14</span>
+                            </a>
+                            <a
+                                    href="#"
+                                    th:href="@{/index/open/staff}"
+                                    class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                            >
+                                Staff not reported to supervisor:
+                                <span class="badge badge-primary badge-pill" th:text="${countStaffNotReportedToSupervisor}">14</span>
+                            </a>
+                            <a
+                                    href="#"
+                                    th:href="@{/index/open/quarantine}"
+                                    class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                Patients not in quarantine:
+                                <span class="badge badge-primary badge-pill" th:text="${countPatientsNotInQuarantine}">14</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-6 mb-4 mb-lg-0">
+                <div class="card h-100">
+                    <h5 class="card-header">Excel Upload</h5>
+                    <div class="card-body">
+                        <form method="POST" th:action="@{/import}" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="file" class="card-title">Select a Excel file</label>
+                                <input
+                                        type="file"
+                                        name="file"
+                                        class="form-control-file"
+                                        id="file"
+                                        accept=".xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Import</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 mb-4 mb-lg-0">
+                <div class="card">
+                    <h5 class="card-header">Last index entries</h5>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped" th:replace="components/content/content_table_indexlist :: indexTable(${lastIndexPeople})">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">First Name</th>
+                                    <th scope="col">Birthday</th>
+                                    <th scope="col">Street</th>
+                                    <th scope="col">Postcode</th>
+                                    <th scope="col">City</th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="person : ${lastIndexPeople}">
+                                    <td th:text="${person.name}">Name</td>
+                                    <td th:text="${person.firstName}">FirstName</td>
+                                    <td th:text="${person.birthday}">1900-01-01</td>
+                                    <td th:text="${person.address.street}">Street Nr</td>
+                                    <td th:text="${person.address.postcode}">Postcode</td>
+                                    <td th:text="${person.address.city}">City</td>
+                                    <td class="btn-group">
+                                        <a href="#" th:href="@{/index/{id}(id=${person.id})}" class="btn btn-sm btn-primary">View</a>
+                                        <a href="#" th:href="@{/export/{id}(id=${person.id})}" class="btn btn-sm btn-primary">Export</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <a href="#" class="btn btn-block btn-light" th:href="@{/index}">View all</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

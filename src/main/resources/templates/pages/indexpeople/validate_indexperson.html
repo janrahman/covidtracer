@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="components/base_layout :: layout(~{::title}, ~{::main}, ${1})">
+<head>
+    <title>Contact Tracer - Validate sheet data</title>
+</head>
+<body>
+<main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4">
+    <h1 class="h4">Validate data</h1>
+
+    <p>Problems are marked in red.</p>
+    <div class="row my-4">
+        <div class="col-12 mb-4 mb-lg-0">
+            <div class="card">
+                <h5 class="card-header">Index</h5>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-sm">
+                            <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">First name</th>
+                                <th scope="col">Birthday</th>
+                                <th scope="col">Street</th>
+                                <th scope="col">Postcode</th>
+                                <th scope="col">City</th>
+                                <th scope="col"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:object="${indexPerson}">
+                                <td
+                                        th:classappend="${indexErrors.containsKey('name')} ? 'bg-danger text-light' : ''"
+                                        th:text="*{name}">
+
+                                </td>
+                                <td
+                                        th:classappend="${indexErrors.containsKey('firstName')} ? 'bg-danger text-light' : ''"
+                                    th:text="*{firstName}">
+
+                                </td>
+                                <td
+                                        th:classappend="${indexErrors.containsKey('birthday')} ? 'bg-danger text-light' : ''"
+                                        th:text="*{birthday}">
+                                    ö
+                                </td>
+                                <td
+                                        th:classappend="${indexErrors.containsKey('address.street')} ? 'bg-danger text-light' : ''"
+                                        th:text="*{address.street}">
+
+                                </td>
+                                <td
+                                        th:classappend="${indexErrors.containsKey('address.postcode')} ? 'bg-danger text-light' : ''"
+                                        th:text="*{address.postcode}">
+
+                                </td>
+                                <td
+                                        th:classappend="${indexErrors.containsKey('address.city')} ? 'bg-danger text-light' : ''"
+                                        th:text="*{address.city}">
+
+                                </td>
+                                <td>
+                                    <a
+                                            href="#"
+                                            th:href="@{/index/{id}/edit(id=*{id})}"
+                                            class="btn btn-primary btn-sm">
+                                        Edit
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mb-4 mb-lg-0">
+            <div class="card">
+                <h5 class="card-header">Reports</h5>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-sm">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Comment</th>
+                                    <th scope="col"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="wrapper : ${reportErrorsWrapper}">
+                                    <td
+                                            th:classappend="${wrapper?.errorRecords?.containsKey('date')} ? 'bg-danger text-light' : ''"
+                                            th:text="${wrapper?.model?.date}">
+
+                                    </td>
+                                    <td
+                                            th:classappend="${wrapper?.errorRecords?.containsKey('comment')} ? 'bg-danger text-light' : ''"
+                                            th:text="${wrapper?.model?.comment}">
+
+                                    </td>
+                                    <td>
+                                        <a
+                                                href="#"
+                                                th:href="@{/reports/{reportId}/index/{id}/edit(reportId=${wrapper?.model?.id},id=*{id})}"
+                                                class="btn btn-primary btn-sm">
+                                            Edit
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div class="row my-4">
+        <div class="col-12 mb-4 mb-lg-0 text-truncate">
+            <div class="card">
+                <h5 class="card-header">Contacts</h5>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-sm">
+                            <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">First name</th>
+                                <th scope="col">Phone</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Street</th>
+                                <th scope="col">Postcode</th>
+                                <th scope="col">City</th>
+                                <th scope="col">Span start</th>
+                                <th scope="col">Span end</th>
+                                <th scope="col"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="wrapper : ${contactErrorsWrapper}">
+                                <td
+                                        th:classappend="${wrapper.errorRecords.containsKey('name')} ? 'bg-danger text-light' : ''"
+                                        th:text="${wrapper?.model?.name}">
+
+                                </td>
+                                <td
+                                        th:classappend="${wrapper.errorRecords.containsKey('firstName')} ? 'bg-danger text-light' : ''"
+                                        th:text="${wrapper?.model?.firstName}">
+
+                                </td>
+                                <td
+                                        th:classappend="${wrapper.errorRecords.containsKey('phone')} ? 'bg-danger text-light' : ''"
+                                        th:text="${wrapper?.model?.phone}">
+
+                                </td>
+                                <td
+                                        th:classappend="${wrapper.errorRecords.containsKey('email')} ? 'bg-danger text-light' : ''"
+                                        th:text="${wrapper?.model?.email}">
+
+                                </td>
+                                <td
+                                        th:classappend="${wrapper.errorRecords.containsKey('address.street')} ? 'bg-danger text-light' : ''"
+                                        th:text="${wrapper?.model?.address?.street}">
+
+                                </td>
+                                <td
+                                        th:classappend="${wrapper.errorRecords.containsKey('address.postcode')} ? 'bg-danger text-light' : ''"
+                                        th:text="${wrapper?.model?.address?.postcode}">
+
+                                </td>
+                                <td
+                                        th:classappend="${wrapper.errorRecords.containsKey('address.city')} ? 'bg-danger text-light' : ''"
+                                        th:text="${wrapper?.model?.address?.city}">
+
+                                </td>
+                                <td
+                                        th:classappend="${wrapper.errorRecords.containsKey('datePeriodStart')} ? 'bg-danger text-light' : ''"
+                                        th:text="${wrapper?.model?.datePeriodStart}">
+
+                                </td>
+                                <td
+                                        th:classappend="${wrapper.errorRecords.containsKey('datePeriodEnd')} ? 'bg-danger text-light' : ''"
+                                        th:text="${wrapper?.model?.datePeriodEnd}">
+
+                                </td>
+                                <td
+                                        th:classappend="${wrapper.errorRecords.containsKey('station') or wrapper.errorRecords.containsKey('station.name')} ? 'bg-danger text-light' : ''"
+                                        th:text="${wrapper?.model?.station?.name}">
+
+                                </td>
+                                <td>
+                                    <a
+                                            href="#"
+                                            th:href="@{/contacts/{contactId}/edit(contactId=${wrapper?.model?.id})}"
+                                            class="btn btn-primary btn-sm">
+                                        Edit
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

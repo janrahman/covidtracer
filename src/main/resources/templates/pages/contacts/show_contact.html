@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="components/base_layout :: layout(~{::title}, ~{::main}, ${1})">
+<head>
+    <title th:text="'Contact Tracer - ' + ${contact.firstName} + ' ' + ${contact.name}">Contact Tracer - Name</title>
+</head>
+<body>
+<main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4">
+    <p>
+        <span class="badge badge-info">Contact</span>
+        <span class="badge badge-secondary" th:text="${contact.status.name}">New</span>
+    </p>
+    <div class="d-flex justify-content-between">
+        <div>
+            <h1 class="h4">
+                <span th:text="${contact.firstName} + ' ' + ${contact.name}">Contact</span>
+            </h1>
+        </div>
+        <div>
+            <a href="#" th:href="@{/contacts/{id}/edit(id=${contact.id})}" class="btn btn-primary">Edit</a>
+            <a href="#" th:href="@{/contacts/{id}/delete/confirm(id=${contact.id})}" class="btn btn-danger">Delete</a>
+        </div>
+    </div>
+    <p>
+        <span class="font-weight-bold">Station (UKD): </span>
+        <span th:text="${contact.station?.name}"></span>
+    </p>
+    <div class="row my-4">
+        <div class="col-12 mb-4 mb-lg-0">
+            <div class="card">
+                <h5 class="card-header">Contact details</h5>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm table-striped" th:object="${contact}">
+                            <thead>
+                            <tr>
+                                <th scope="col">Street</th>
+                                <th scope="col">Postcode</th>
+                                <th scope="col">City</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Phone</th>
+                                <th:block th:if="${contact.status == T(de.hhu.covidtracer.models.Status).STAFF}">
+                                    <th scope="col">Occupation</th>
+                                    <th scope="col">Category</th>
+                                </th:block>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td th:text="*{address?.street}"></td>
+                                <td th:text="*{address?.postcode}"></td>
+                                <td th:text="*{address?.city}"></td>
+                                <td th:text="*{email}"></td>
+                                <td th:text="*{phone}"></td>
+                                <th:block th:if="${contact.status == T(de.hhu.covidtracer.models.Status).STAFF}">
+                                    <td th:text="*{occupationGroup}"></td>
+                                    <td th:text="*{category}"></td>
+                                </th:block>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" th:if="${contact.status.name() != 'VISITOR'}">
+        <div class="col-12 mb-4 mb-lg-0">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between">
+                    <div>
+                        <h5>Reports</h5>
+                    </div>
+                    <div>
+                        <a href="#" th:href="@{/reports/contacts/{id}/new(id=${contact.id})}" class="btn btn-sm btn-primary">New</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">Comment</th>
+                                <th scope="col"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="report : ${reports}">
+                                <th scope="row" th:text="${report?.date}">17371705</th>
+                                <td>
+                                        <span th:text="${report?.comment}" class="text-truncate">
+                                            comment
+                                        </span>
+                                </td>
+                                <td class="btn-group" aria-label="reports options">
+                                    <a href="#" th:href="@{/reports/{reportId}/contacts/{contactId}/edit(contactId=${contact.id}, reportId=${report.id})}" class="btn btn-sm btn-primary">Edit</a>
+                                    <a href="#" th:href="@{/reports/{reportId}/contacts/{contactId}/reports/{reportId}/delete/confirm(contactId=${contact.id}, reportId=${report.id})}" class="btn btn-sm btn-danger">Delete</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" th:classappend="${contact.status.name() == 'VISITOR' ? '' : 'my-4'}">
+        <div class="col-12 mb-4 mb-lg-0">
+            <div class="card">
+                <h5 class="card-header">
+                    Associated index
+                </h5>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col">Status</th>
+                                <th scope="col">Fullname</th>
+                                <th scope="col">Address</th>
+                                <th scope="col">Span</th>
+                                <th scope="col"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="indexContact : ${indexContacts}">
+                                <td th:text="${indexContact?.index?.status.name}"></td>
+                                <td th:text="${indexContact?.index?.name + ' ' + indexContact?.index?.firstName}">Name</td>
+                                <td th:text="${indexContact?.index?.address?.street + ', ' + indexContact?.index?.address?.postcode + ' ' + indexContact?.index?.address?.city}">Street Nr</td>
+                                <td>
+                                    <a th:href="@{/index/{indexId}/contacts/{contactId}/edit(indexId=${indexContact?.index?.id}, contactId=${contact.id})}" title="Change expose dates">
+                                        <span th:text="${indexContact?.contactDateStart.isEmpty() or indexContact?.contactDateEnd.isEmpty()} ? 'Invalid dates' : ${indexContact?.contactDateStart + ' - ' + indexContact?.contactDateEnd}"></span>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="#" th:href="@{/index/{indexId}(indexId=${indexContact?.index?.id})}" class="btn btn-sm btn-primary">View</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

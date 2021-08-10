@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="components/base_layout :: layout(~{::title}, ~{::main}, ${1})">
+<head>
+    <title th:text="${'Contact Tracer - Contact ' + status.name}">Contact Tracer - contacts</title>
+</head>
+<body>
+<main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4">
+    <h1 class="h4" th:text="${status.name + ' ' + 'contacts'}">Contacts</h1>
+    <p th:text="${'Contacts of ' + index.firstName + ' ' + index.name}">Contacts</p>
+    <div class="row my-4">
+        <div class="col-12 mb-4 mb-lg-0">
+            <div class="card">
+                <h5 class="card-header" th:text="${status.name}"></h5>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table
+                                class="table table-sm table-striped"
+                                th:replace="components/content/content_table_contactlist :: contactTable(${index.id}, ${contacts}, ${status})">
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

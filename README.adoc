@@ -1,0 +1,168 @@
+= Bachelorarbeit: Entwicklung einer Webapplikation zur Kontaktverfolgung von Corona-Fällen
+Jan Rahman, <jan.rahman@hhu.de>
+
+== Problemstellung
+In Zusammenarbeit mit dem Uniklinikum Düsseldorf möchte ich eine Webanwendung entwickeln, die Personen und Mitarbeiter verfolgt,
+welche möglicherweise dem SARS-CoV-2-Virus ausgesetzt wurden.
+Insbesondere sollen tatsächliche Infektionen und Quarantäneaufenthalt nachverfolgt werden.
+Da diese Personen an das Gesundheitsamt weitergeleitet werden müssen, soll die Anwendung dazu beitragen, den Kommunikationsprozess zwischen Krankenhaus und Gesundheitsamt zu verbessern.
+Des Weiteren können die Daten zur Auswertung verarbeitet werden und (in Bezug zum Datenschutz) eine bessere Übersicht darstellen.
+
+Der Prototyp der Software soll sehr früh erstellt werden, sodass im weiteren Verlauf der Bearbeitungszeit die Anwendung gemeinsam mit den Mitarbeitern des UKD getestet und verbessert werden soll.
+
+
+== Erste Schritte
+
+
+=== Vorraussetzungen
+* Java 8 JDK
+* Unix (bash)
+
+=== Installation
+Zunächst muss man sicherstellen, dass die Datei "application.properties" das Profil "prod" (Spring Security aktiv) bzw. "local" benutzt.
+
+.covidtracer/src/main/resources/application.properties
+----
+spring.profiles.active=prod
+# oder
+spring.profiles.active=local
+----
+
+Im covidtracer-Verzeichnis, in der sich "gradlew" befindet, kann nun folgender Befehl in der Konsole ausgeführt werden:
+
+.covidtracer/
+----
+$ ./gradlew bootRun
+----
+
+Auch bei jedem Start wird dieser Befehl ausgeführt.
+
+=== Updates
+Updates können über git bezogen werden.
+
+.covidtracer/
+----
+$ git pull
+----
+
+=== Beenden
+In der Konsole kann man den Befehl einfach abbrechen (Ctrl + C).
+
+=== Optionen
+In der application.properties (und application-{prod, local}.properties) können die Einstellungen nach Bedarf verändert werden.
+Achtung: Die Einstellungen verändern die Funktionsweise des Programms und können ggbf. Fehler erzeugen.
+Empfehlung: lediglich die application.properties anpassen
+
+.Beispiele:
+* spring.application.name
+** setzt Programmnamen (wird z.B. beim Start der Anwendung angezeigt)
+* spring.profiles.active
+** setzt aktives Profil (dev, local, prod)
+** Profil postgres wird nicht mehr weiterentwickelt
+* server.address
+** hier kann die ip des Hosts eingegeben werden
+* server.port
+** hier wird der Serverport gesetzt
+* custom.config.database.file
+** hier kann der Speicherort der H2-Datenbankdatei festgelegt werden (https://www.h2database.com/html/features.html#database_url)
+* custom.config.excel.export.password
+** hier kann das Passwort zur Verschlüsselung des Excelexports gesetzt werden
+
+=== Logindaten
+Vorraussetzung: Spring Security ist aktiv bzw das Profil "local" wurde nicht gesetzt.
+
+----
+// Admin - KH/BÄD
+username: admin
+password: password123
+
+// User - HBA
+username: user
+password: password
+----
+
+== Distribution
+Im folgenden wird kurz erklärt, wie der Quellcode mithilfe von gradle zu einer ausführbaren Jar erzeugt wird.
+
+=== Vorraussetzungen
+* Java 8 JDK
+* Unix (bash)
+
+=== Kompilieren
+Navigiere zum covidtracer-Verzeichnis, in der sich die "gradlew" befindet.
+Zunächst stellt man sicher, dass der build-Ordner leer ist:
+
+.covidtracer/
+----
+$ ./gradlew clean
+----
+
+Dann kann folgender Befehl ausgeführt werden:
+
+.covidtracer/
+----
+$ ./gradlew bootDistZip
+----
+
+Nachdem der Prozess beendet ist, befindet sich eine .zip-Datei in "./covidtracer/build/distributions".
+
+
+== H2-Konsole (optional)
+Die H2-Konsole (UI der Datenbank) ist in der "application-dev.properties" aktiviert.
+
+.covidtracer/src/main/resources/application-prod.properties
+----
+spring.h2.console.enabled=true
+----
+
+Die Spring-Security muss zusätzlich durch folgende Einstellungen angepasst werden:
+
+----
+.antMatchers("/h2-console/**").permitAll()
+.and().csrf().ignoringAntMatchers("/h2-console/**")
+.and().headers().frameOptions().sameOrigin()
+----
+
+Beispiel:
+
+.covidtracer/src/main/java/de/hhu/covidtracer/security/SecurityConfig.java
+[source,java]
+----
+@Override
+protected void configure(HttpSecurity http) throws Exception {
+    http
+            .authorizeRequests()
+            .antMatchers("/h2-console/**").permitAll()
+            .anyRequest()
+            .authenticated()
+            .and()
+            .formLogin()
+            .and().csrf().ignoringAntMatchers("/h2-console/**")
+            .and().headers().frameOptions().sameOrigin();
+}
+----
+
+URL und Zugang:
+
+----
+http://localhost:8080/h2-console
+----
+
+----
+JDBC URL: jdbc:h2:mem:testdb
+User Name: admin_dev
+Password:
+----
+
+== Quellen
+
+=== Tutorials
+* https://spring.io/guides/gs/spring-boot/
+* https://spring.io/guides/gs/spring-boot-docker/
+
+=== Dokumentationen
+* https://docs.spring.io/spring-framework/docs/current/reference/html/
+* https://docs.spring.io/spring-boot/docs/2.1.8.RELEASE/gradle-plugin/reference/html/
+* https://docs.docker.com/
+* https://www.thymeleaf.org/documentation.html
+* https://www.h2database.com/html/features.html#database_url

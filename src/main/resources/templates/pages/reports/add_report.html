@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="components/base_layout :: layout(~{::title}, ~{::main}, ~{})">
+<head>
+    <title>Contact Tracer - New Report</title>
+</head>
+<body>
+<main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4">
+    <h1 class="h4">New report</h1>
+    <p th:text="'Report for ' + ${person.firstName} + ' ' + ${person.name}">
+        Report</p>
+    <div class="row my-4">
+        <div class="col-12 col-md-6 col-lg-6 mb-4 mb-lg-0"
+             th:replace="components/content/content_form_report :: form(${reportForm}, @{/reports/index/{indexId}/new/(indexId=${person.id})}, ~{::input})">
+            <div class="form-group">
+                <input type="hidden" th:field="${person.id}"
+                       readonly="readonly"/>
+                <input type="hidden" th:field="${person.firstName}"
+                       readonly="readonly"/>
+                <input type="hidden" th:field="${person.name}"
+                       readonly="readonly"/>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>
